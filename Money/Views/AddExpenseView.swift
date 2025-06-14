@@ -20,24 +20,33 @@ struct AddExpenseView: View {
     @State private var showingError = false
     @State private var errorMessage = ""
     
+    // MARK: - 计算属性
+    private var isValidInput: Bool {
+        !amount.isEmpty && 
+        Double(amount) != nil && 
+        Double(amount)! > 0 && 
+        selectedCategory != nil && 
+        selectedAccount != nil
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 25) {
+                VStack(spacing: 20) {
+                    // 金额输入
+                    amountSection
                     
-                    // MARK: - 金额输入区域
-                    amountInputSection
+                    // 分类选择
+                    categorySection
                     
-                    // MARK: - 分类选择区域
-                    categorySelectionSection
+                    // 账户选择
+                    accountSection
                     
-                    // MARK: - 账户选择区域
-                    accountSelectionSection
+                    // 日期选择
+                    dateSection
                     
-                    // MARK: - 备注和日期
-                    noteAndDateSection
-                    
-                    Spacer(minLength: 20)
+                    // 备注输入
+                    noteSection
                 }
                 .padding()
             }
@@ -63,7 +72,7 @@ struct AddExpenseView: View {
                 loadData()
             }
             .alert("错误", isPresented: $showingError) {
-                Button("确定") { }
+                Button("确定", role: .cancel) { }
             } message: {
                 Text(errorMessage)
             }
@@ -71,8 +80,8 @@ struct AddExpenseView: View {
     }
     
     // MARK: - 金额输入区域
-    private var amountInputSection: some View {
-        VStack(alignment: .leading, spacing: 15) {
+    private var amountSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
             Text("金额")
                 .font(.headline)
                 .fontWeight(.semibold)
@@ -87,83 +96,88 @@ struct AddExpenseView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .keyboardType(.decimalPad)
-                    .textFieldStyle(PlainTextFieldStyle())
+                    .multilineTextAlignment(.leading)
             }
             .padding()
             .background(Color(.secondarySystemGroupedBackground))
-            .cornerRadius(15)
+            .cornerRadius(12)
         }
     }
     
     // MARK: - 分类选择区域
-    private var categorySelectionSection: some View {
+    private var categorySection: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("分类")
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 15) {
-                ForEach(categories) { category in
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 15) {
+                ForEach(categories, id: \.self) { category in
                     CategorySelectionItem(
                         category: category,
-                        isSelected: selectedCategory?.id == category.id
+                        isSelected: selectedCategory == category
                     ) {
                         selectedCategory = category
                     }
                 }
             }
+            .padding()
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(12)
         }
     }
     
     // MARK: - 账户选择区域
-    private var accountSelectionSection: some View {
+    private var accountSection: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text("支付方式")
+            Text("账户")
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
-                ForEach(accounts) { account in
+            VStack(spacing: 8) {
+                ForEach(accounts, id: \.self) { account in
                     AccountSelectionItem(
                         account: account,
-                        isSelected: selectedAccount?.id == account.id
+                        isSelected: selectedAccount == account
                     ) {
                         selectedAccount = account
                     }
                 }
             }
+            .padding()
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(12)
         }
     }
     
-    // MARK: - 备注和日期区域
-    private var noteAndDateSection: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("备注和时间")
+    // MARK: - 日期选择区域
+    private var dateSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("日期")
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            VStack(spacing: 12) {
-                // 备注输入
-                TextField("添加备注（可选）", text: $note)
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(10)
-                
-                // 日期选择
-                DatePicker("时间", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(10)
-            }
+            DatePicker("选择日期", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                .datePickerStyle(.compact)
+                .padding()
+                .background(Color(.secondarySystemGroupedBackground))
+                .cornerRadius(12)
         }
     }
     
-    // MARK: - 验证输入
-    private var isValidInput: Bool {
-        guard let amountValue = Double(amount), amountValue > 0 else { return false }
-        guard selectedCategory != nil else { return false }
-        guard selectedAccount != nil else { return false }
-        return true
+    // MARK: - 备注输入区域
+    private var noteSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("备注")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            TextField("添加备注...", text: $note, axis: .vertical)
+                .lineLimit(3...6)
+                .padding()
+                .background(Color(.secondarySystemGroupedBackground))
+                .cornerRadius(12)
+        }
     }
     
     // MARK: - 加载数据
@@ -171,33 +185,26 @@ struct AddExpenseView: View {
         categories = dataManager.fetchCategories()
         accounts = dataManager.fetchAccounts()
         
-        // 设置默认选择
-        selectedCategory = categories.first
-        selectedAccount = accounts.first
+        // 默认选择第一个分类和账户
+        if selectedCategory == nil {
+            selectedCategory = categories.first
+        }
+        if selectedAccount == nil {
+            selectedAccount = accounts.first
+        }
     }
     
-    // MARK: - 保存支出
+    // MARK: - 保存支出记录
     private func saveExpense() {
-        guard let amountValue = Double(amount), amountValue > 0 else {
-            errorMessage = "请输入有效的金额"
+        guard let amountValue = Double(amount),
+              let category = selectedCategory,
+              let account = selectedAccount else {
+            errorMessage = "请填写完整信息"
             showingError = true
             return
         }
         
-        guard let category = selectedCategory else {
-            errorMessage = "请选择支出分类"
-            showingError = true
-            return
-        }
-        
-        guard let account = selectedAccount else {
-            errorMessage = "请选择支付方式"
-            showingError = true
-            return
-        }
-        
-        // 创建支出记录
-        let _ = dataManager.addExpense(
+        let expense = dataManager.addExpense(
             amount: amountValue,
             category: category,
             account: account,
@@ -205,7 +212,12 @@ struct AddExpenseView: View {
             date: selectedDate
         )
         
-        dismiss()
+        if expense != nil {
+            dismiss()
+        } else {
+            errorMessage = "保存失败，请重试"
+            showingError = true
+        }
     }
 }
 

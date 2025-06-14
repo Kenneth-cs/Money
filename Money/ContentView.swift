@@ -19,6 +19,7 @@ struct ContentView: View {
     @State private var todayExpenses: Double = 0
     @State private var monthExpenses: Double = 0
     @State private var recentExpenses: [Expense] = []
+    @State private var showingExpenseList = false
     
     var body: some View {
         NavigationView {
@@ -48,6 +49,12 @@ struct ContentView: View {
                 AddExpenseView()
                     .onDisappear {
                         loadData() // 添加记录后刷新数据
+                    }
+            }
+            .sheet(isPresented: $showingExpenseList) {
+                ExpenseListView()
+                    .onDisappear {
+                        loadData() // 从列表返回后刷新数据
                     }
             }
         }
@@ -116,7 +123,7 @@ struct ContentView: View {
                     .fontWeight(.semibold)
                 Spacer()
                 Button("查看全部") {
-                    // TODO: 跳转到完整列表
+                    showingExpenseList = true
                 }
                 .font(.caption)
                 .foregroundColor(.blue)

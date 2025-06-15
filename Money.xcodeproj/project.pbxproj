@@ -29,9 +29,22 @@
 		5C6390A02DFD610000EF632A /* MoneyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoneyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5C6390D12DFD6F4C00EF632A /* Exceptions for "Money" folder in "Money" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5C6390852DFD60FE00EF632A /* Money */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5C6390882DFD60FE00EF632A /* Money */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5C6390D12DFD6F4C00EF632A /* Exceptions for "Money" folder in "Money" target */,
+			);
 			path = Money;
 			sourceTree = "<group>";
 		};
@@ -399,6 +412,9 @@
 				DEVELOPMENT_TEAM = Y7Y4TU7UT8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Money/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存识别的图片到相册作为支出记录的附件";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要访问相册选择支付截图或小票来自动识别支出信息";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +444,9 @@
 				DEVELOPMENT_TEAM = Y7Y4TU7UT8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Money/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存识别的图片到相册作为支出记录的附件";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要访问相册选择支付截图或小票来自动识别支出信息";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

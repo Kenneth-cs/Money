@@ -25,38 +25,57 @@ class OCRService {
     
     // MARK: - 识别图片中的文字
     func recognizeText(from image: UIImage, completion: @escaping (Result<[OCRResult], Error>) -> Void) {
+        print("🔍 开始OCR识别...")
+        print("📷 图片信息: 尺寸=\(image.size), 方向=\(image.imageOrientation.rawValue)")
+        
         guard let cgImage = image.cgImage else {
+            print("❌ 无法获取CGImage")
             completion(.failure(OCRError.invalidImage))
             return
         }
         
+        print("📷 CGImage信息: 宽=\(cgImage.width), 高=\(cgImage.height)")
+        
         // 创建文字识别请求
         let request = VNRecognizeTextRequest { (request, error) in
             if let error = error {
+                print("❌ OCR识别请求失败: \(error.localizedDescription)")
                 completion(.failure(error))
                 return
             }
             
             guard let observations = request.results as? [VNRecognizedTextObservation] else {
+                print("❌ 没有找到文本识别结果")
                 completion(.failure(OCRError.noTextFound))
                 return
             }
             
+            print("📝 识别到 \(observations.count) 个文本区域")
             let results = self.processTextObservations(observations)
+            print("✅ OCR识别完成，共识别到 \(results.count) 个文本块")
+            
+            // 打印所有识别结果
+            for (index, result) in results.enumerated() {
+                print("📝 文本[\(index)]: '\(result.recognizedText)' (置信度: \(String(format: "%.2f", result.confidence)))")
+            }
+            
             completion(.success(results))
         }
         
-        // 配置识别参数
+        // 配置识别参数 - 使用最高精度
+        print("🔧 OCR配置: 精确模式, 语言=[zh-CN, en], 语言校正=开启")
         request.recognitionLevel = .accurate
         request.recognitionLanguages = ["zh-CN", "en"] // 支持中文和英文
         request.usesLanguageCorrection = true
         
         // 执行识别
+        print("🚀 开始执行OCR识别...")
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 try requestHandler.perform([request])
             } catch {
+                print("❌ OCR执行失败: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }

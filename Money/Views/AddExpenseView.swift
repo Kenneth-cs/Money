@@ -11,6 +11,9 @@ struct AddExpenseView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     
+    // MARK: - 预填充数据
+    let prefilledData: URLStateManager.PrefilledExpenseData?
+    
     // MARK: - 状态变量
     @State private var amount = ""
     @State private var selectedCategory: Category?
@@ -42,6 +45,11 @@ struct AddExpenseView: View {
         Double(amount)! > 0 && 
         selectedCategory != nil && 
         selectedAccount != nil
+    }
+    
+    // MARK: - 初始化方法
+    init(prefilledData: URLStateManager.PrefilledExpenseData? = nil) {
+        self.prefilledData = prefilledData
     }
     
     var body: some View {
@@ -88,6 +96,7 @@ struct AddExpenseView: View {
             }
             .onAppear {
                 loadData()
+                applyPrefilledData()
             }
             .alert("错误", isPresented: $showingError) {
                 Button("确定", role: .cancel) { }
@@ -419,6 +428,29 @@ struct AddExpenseView: View {
         
         // 记录创建成功，关闭页面
         dismiss()
+    }
+    
+    // MARK: - 应用预填充数据
+    private func applyPrefilledData() {
+        guard let prefilledData = prefilledData else { return }
+        
+        // 填充金额
+        amount = prefilledData.amount
+        
+        // 填充分类
+        if let categoryName = prefilledData.category {
+            selectedCategory = categories.first { $0.name == categoryName }
+        }
+        
+        // 填充账户
+        if let accountName = prefilledData.account {
+            selectedAccount = accounts.first { $0.name == accountName }
+        }
+        
+        // 填充备注
+        note = prefilledData.note
+        
+        print("✅ 预填充数据已应用 - 金额: \(amount), 分类: \(selectedCategory?.name ?? "无"), 账户: \(selectedAccount?.name ?? "无"), 备注: \(note)")
     }
 }
 

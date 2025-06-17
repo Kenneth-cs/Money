@@ -2,7 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Privacy - Camera Usage Description 或 NSCameraUsageDescription</key>
-	<string>需要使用相机拍摄支付截图或小票来自动识别支出信息</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>money-app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>money</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSShortcutsUsageDescription String</key>
+	<string>允许快捷指令调用应用进行自动记账</string>
+	<key>NSSupportsShortcuts Boolean</key>
+	<string>YES</string>
+	<key>NSUserActivityUsageDescription String</key>
+	<string>允许应用与快捷指令交互，实现自动记账功能</string>
 </dict>
 </plist>

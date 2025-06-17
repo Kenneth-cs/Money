@@ -21,6 +21,9 @@ struct ContentView: View {
     @State private var recentExpenses: [Expense] = []
     @State private var showingExpenseList = false
     
+    // MARK: - URL状态管理器
+    @StateObject private var urlStateManager = URLStateManager.shared
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -55,6 +58,13 @@ struct ContentView: View {
                 ExpenseListView()
                     .onDisappear {
                         loadData() // 从列表返回后刷新数据
+                    }
+            }
+            .sheet(isPresented: $urlStateManager.shouldShowAddExpense) {
+                AddExpenseView(prefilledData: urlStateManager.prefilledData)
+                    .onDisappear {
+                        urlStateManager.reset() // 重置URL状态
+                        loadData() // 刷新数据
                     }
             }
         }

@@ -13,11 +13,33 @@
 			</array>
 		</dict>
 	</array>
-	<key>NSShortcutsUsageDescription String</key>
+	
+	<!-- 相机权限 -->
+	<key>NSCameraUsageDescription</key>
+	<string>需要访问相机来拍摄支付截图，进行OCR文字识别和自动记账</string>
+	
+	<!-- 照片库权限 - 支持完全访问 -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问照片来识别支付截图中的金额和商家信息，实现智能记账功能。建议选择"完全访问"以获得最佳体验。</string>
+	
+	<!-- 照片库添加权限 -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>需要保存处理后的图片到相册</string>
+	
+	<!-- 快捷指令权限 -->
+	<key>NSShortcutsUsageDescription</key>
 	<string>允许快捷指令调用应用进行自动记账</string>
-	<key>NSSupportsShortcuts Boolean</key>
-	<string>YES</string>
-	<key>NSUserActivityUsageDescription String</key>
+	<key>NSSupportsShortcuts</key>
+	<true/>
+	<key>NSUserActivityUsageDescription</key>
 	<string>允许应用与快捷指令交互，实现自动记账功能</string>
+	
+	<!-- 🔑 关键配置：确保支持完全访问选项 -->
+	<key>PHPhotoLibraryRequestedAuthorizationLevel</key>
+	<string>full</string>
+	
+	<!-- 防止自动限制访问提醒 -->
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<false/>
 </dict>
 </plist>

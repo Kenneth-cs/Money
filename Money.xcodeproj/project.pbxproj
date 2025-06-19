@@ -414,8 +414,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Money/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Money记账";
-				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机拍摄支付截图或小票来自动识别支出信息";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存识别的图片到相册作为支出记录的附件";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问相机来拍摄支付截图，进行OCR文字识别和自动记账";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存处理后的图片到相册";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要访问相册选择支付截图或小票来自动识别支出信息";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -448,8 +448,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Money/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Money记账";
-				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机拍摄支付截图或小票来自动识别支出信息";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存识别的图片到相册作为支出记录的附件";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问相机来拍摄支付截图，进行OCR文字识别和自动记账";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "需要保存处理后的图片到相册";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要访问相册选择支付截图或小票来自动识别支出信息";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

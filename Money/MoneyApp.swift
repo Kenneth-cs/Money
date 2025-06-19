@@ -38,6 +38,15 @@ struct MoneyApp: App {
         ShortcutsService.shared.registerShortcuts()
         ShortcutsService.shared.requestNotificationPermission()
         
+        // 🧪 URL编码测试 - 验证文本编码问题
+        print("\n🧪 启动URL编码测试...")
+        URLEncodingTestHelper.shared.runFullEncodingTest()
+        URLEncodingTestHelper.shared.testShortcutScenario()
+        URLEncodingTestHelper.shared.generateTestURLs()
+        
+        // 📸 检查照片权限状态
+        PermissionManager.shared.checkAllPermissions()
+        
         print("✅ Money应用初始化完成")
     }
     
